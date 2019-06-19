@@ -4,9 +4,9 @@ pygame.init()
 
 
 #medidas usadas
-largura = 800
+largura = 400
 altura = 600
-comprimentos = (800,600)
+comprimentos = (400,600)
 
 #criando tela
 tela = pygame.display.set_mode(comprimentos)
@@ -62,7 +62,7 @@ def Fundo():
     tela.blit(fundo,(0,0))
     #tela.blit(fundo,(0,200))
     #tela.blit(fundo,(0,400))
-    tela.blit(fundo, (700, 0))
+    tela.blit(fundo, (350, 0))
     #tela.blit(fundo, (700,200))
     #tela.blit(fundo, (700,400))
     tela.blit(faixa_amarela, (largura / 2, 100))
@@ -198,21 +198,23 @@ def game():
             
             
             #se o carro bater na lateral o jogo dá endgame
-            if x>680-carro_largura or x<110:
+            if x>380-carro_largura or x<110:
                 bateu = True
             
 
             #fazer o obstaculo ficar em looping
             if obs_y> altura-obstaculo_altura:
                 obs_y = 0
-                obs_x = randint(140, 400)
+                obs_x = randint(100, 200)
+                #obstaculo(obs_x1, obs_y1, foto_obstaculo2)
+                #pygame.display.update()
 
             #fazer o obstaculo ficar em looping
             if obs_y1> altura-obstaculo_altura:
                 obs_y1 = 0
-                obs_x1 = randint(450, largura-150)  
-
-            
+                obs_x1 = randint(200, largura-150)  
+                #obstaculo(obs_x1, obs_y1, foto_obstaculo1)
+                #pygame.display.update()
 
             
             #usada para atualizar a tela
