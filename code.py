@@ -4,9 +4,9 @@ pygame.init()
 
 
 #medidas usadas
-largura = 400
+largura = 300
 altura = 600
-comprimentos = (400,600)
+comprimentos = (300,600)
 
 #criando tela
 tela = pygame.display.set_mode(comprimentos)
@@ -21,13 +21,20 @@ relogio=pygame.time.Clock()
 carro_imagem=pygame.image.load("car7.jpg")
 fundo = pygame.image.load("download12.jpg")
 faixa_amarela=pygame.image.load("yellow strip.jpg")
-faixa=pygame.image.load("strip.jpg")
+#faixa=pygame.image.load("strip.jpg")
+
+#carro azul
 foto_obstaculo1 = pygame.image.load("car2.jpg")
+
+#carro roxo
 foto_obstaculo2 = pygame.image.load("car4.jpg")
+
+#foto menu
 roda_menu = pygame.image.load("burning_wheel.png")
 
 #musicas
-music = pygame.mixer.music.load("tokyo_bits.ogg")
+#music = pygame.mixer.music.load("tokyo_bits.ogg")
+music = pygame.mixer.music.load("top_gear_music.ogg")
 #car_moving=pygame.mixer.Sound("engine_start.wav")
 
 
@@ -59,23 +66,34 @@ def texto(msg, cor, larg, alt,fonte):
     
 #função usada para por os objetos do fundo na tela
 def Fundo():
-    tela.blit(fundo,(0,0))
+    tela.blit(fundo,(-50,0))
     #tela.blit(fundo,(0,200))
     #tela.blit(fundo,(0,400))
     tela.blit(fundo, (350, 0))
     #tela.blit(fundo, (700,200))
     #tela.blit(fundo, (700,400))
-    tela.blit(faixa_amarela, (largura / 2, 100))
-    tela.blit(faixa_amarela, (largura/2,200))
-    tela.blit(faixa_amarela, (largura/2,300))
-    tela.blit(faixa_amarela, (largura / 2, 400))
-    tela.blit(faixa_amarela, (largura / 2, 500))
+    
 
 
 #função que cria os obstaculos
 def obstaculo(obs_x, obs_y, obs_pic):
-    
-    tela.blit(obs_pic, (obs_x, obs_y))
+   
+   tela.blit(obs_pic, (obs_x, obs_y))
+
+#variavel acrescimo de posiçao y
+
+_y_ = 0
+
+mudar = 0
+
+#objetos que vão se mover
+def objetos_fundo(obs_faixa_x, obs_faixa_y):
+    global _y_
+    global mudar
+    for step in range(0, 3*65+1, 65):
+        tela.blit(faixa_amarela, (obs_faixa_x, obs_faixa_y+ step + _y_))
+        mudar = obs_faixa_y+ step + _y_
+        _y_ += 2
 
 #função que cria o carro
 def carro(x,y):
@@ -103,6 +121,8 @@ def game():
     obs_y1=100
     obs_vel1=5.7
 
+    #variaveis da movimentação, 
+    obs_faixa_x = largura/2
     #modulos de mudanças de tela
     sair = True
     menu = True
@@ -115,8 +135,8 @@ def game():
         tela.fill(branco)
         tela.blit(roda_menu, (largura/5, altura/5))
         
-        texto("PRESS SPACE TO PLAY", vermelho, largura/7, altura/4,font_upper)
-        texto("PRESS Q TO QUIT", vermelho, largura/7, altura/3, font_upper )
+        texto("PRESS SPACE TO PLAY", vermelho, largura/7, altura/4,font)
+        texto("PRESS Q TO QUIT", vermelho, largura/7, altura/3, font)
         pygame.display.update()
         for event in pygame.event.get():
                 
@@ -138,9 +158,9 @@ def game():
         while sair:
             while bateu:
                 tela.fill(preto)
-                texto("YOUR LOSEEEEE!!!", vermelho, largura/7, altura/5, font_upper)
-                texto("Press q to quit(ur sucker)", vermelho, largura/7, altura/3.9, font_upper )
-                texto("Press c to continue(ur idiot)", vermelho, largura/7, altura/3, font_upper)
+                texto("YOUR LOSEEEEE!!!", vermelho, largura/7, altura/5, font)
+                texto("Press q to quit(ur sucker)", vermelho, largura/7, altura/3.9, font )
+                texto("Press c to continue(ur idiot)", vermelho, largura/7, altura/3, font)
                 pygame.display.update()
                 for event in pygame.event.get():
                 
@@ -193,28 +213,42 @@ def game():
             carro(x,y)
             
             #cria os obstaculos
+            
+            '''azul'''
             obstaculo(obs_x, obs_y, foto_obstaculo1)
+            
+            '''roxo'''
             obstaculo(obs_x1, obs_y1, foto_obstaculo2)
+            
+            objetos_fundo(largura/2, 0)
             
             
             #se o carro bater na lateral o jogo dá endgame
-            if x>380-carro_largura or x<110:
+            if x>380-carro_largura or x<50:
                 bateu = True
             
 
             #fazer o obstaculo ficar em looping
             if obs_y> altura-obstaculo_altura:
-                obs_y = 0
-                obs_x = randint(100, 200)
+                obs_y = -10
+                obs_x = randint(50, 96)
+                #print(obs_x)
                 #obstaculo(obs_x1, obs_y1, foto_obstaculo2)
                 #pygame.display.update()
 
             #fazer o obstaculo ficar em looping
             if obs_y1> altura-obstaculo_altura:
-                obs_y1 = 0
-                obs_x1 = randint(200, largura-150)  
+                obs_y1 = -10
+                obs_x1 = randint(190, 244) 
+                print(obs_x1)
                 #obstaculo(obs_x1, obs_y1, foto_obstaculo1)
                 #pygame.display.update()
+            global mudar
+            #print(mudar)
+            global _y_
+            if (mudar >= 800):
+                _y_ = 0
+                
 
             
             #usada para atualizar a tela
