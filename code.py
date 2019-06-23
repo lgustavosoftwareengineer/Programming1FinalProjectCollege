@@ -52,7 +52,7 @@ branco = (255,255,255)
 
 #fontes
 font = pygame.font.SysFont(None, 20)
-font_upper = pygame.font.SysFont(None, 30)
+font_upper = pygame.font.SysFont(None, 35)
 
 #função usada para criar texto
 def texto(msg, cor, larg, alt,fonte):
@@ -65,7 +65,7 @@ def texto(msg, cor, larg, alt,fonte):
     # A superficie onde eu irei blitar o texto é o fundo
 
 #função usada para por os objetos do fundo na tela
-def Fundo():
+def objetos_fundo_estatico():
     tela.blit(fundo,(-50,0))
     tela.blit(fundo, (350, 0))
     
@@ -73,7 +73,7 @@ def Fundo():
 _y_ = 0
 mudar = 0
 #objetos que vão se mover
-def objetos_fundo(obs_faixa_x, obs_faixa_y):
+def objetos_fundo_cinematicos(obs_faixa_x, obs_faixa_y):
     global _y_
     global mudar
     for step in range(0, 3*65+1, 65):
@@ -156,6 +156,7 @@ def game():
         while sair:
             while bateu:
                 tela.fill(preto)
+                texto('YOUR SCORE: {}'.format(contador), branco, largura/7, altura/2, font_upper)
                 texto("YOUR LOSEEEEE!!!", vermelho, largura/7, altura/5, font)
                 texto("Press q to quit(ur sucker)", vermelho, largura/7, altura/3.9, font )
                 texto("Press c to continue(ur idiot)", vermelho, largura/7, altura/3, font)
