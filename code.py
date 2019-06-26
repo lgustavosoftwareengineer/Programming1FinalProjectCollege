@@ -18,7 +18,7 @@ pygame.display.set_caption("car game")
 relogio=pygame.time.Clock()
 
 #imagens usadas
-carro_imagem=pygame.image.load("carrinho_azul.png")
+carro_imagem=pygame.image.load("carrinho_laranja.png")
 fundo = pygame.image.load("download12.jpg")
 pista=pygame.image.load("pista.png")
 #faixa=pygame.image.load("strip.jpg")
