@@ -3,59 +3,69 @@ from random import randint
 pygame.init()
 
 
-#medidas usadas
+'''medidas usadas'''
+
 largura = 300
 altura = 600
 comprimentos = (300,600)
 
-#criando tela
+'''criando tela'''
+
 tela = pygame.display.set_mode(comprimentos)
 
-#legenda
+'''legenda'''
+
 pygame.display.set_caption("CarRacingGame")
 
-#fps
+'''fps'''
+
 relogio=pygame.time.Clock()
 
-#imagens usadas
+'''imagens usadas'''
+
 carro_imagem=pygame.image.load("carro_azul.png")
-fundo = pygame.image.load("download12.jpg")
 pista=pygame.image.load("pista_preta.png")
 quadrado_pista = pygame.image.load("quadrados_pista.png")
 
 
-#carro inimigo vermelho 1
+'''carro inimigo vermelho 1'''
+
 foto_obstaculo1 = pygame.image.load("carro_vermelho.png")
 
-#carro inimigo vermelho 2
+'''carro inimigo vermelho 2'''
+
 foto_obstaculo2 = pygame.image.load("carro_vermelho.png")
 
-#foto menu/gameover
+'''foto menu/gameover'''
+
 tela_inicial = pygame.image.load("tela_inicial.png")
 tela_gameover = pygame.image.load("tela_gameover.png")
 
 '''sons/músicas'''
-#music = pygame.mixer.music.load("tokyo_bits.ogg")
+
 music = pygame.mixer.music.load("run_song.ogg")
-#car_moving=pygame.mixer.Sound("engine_start.wav")
 carro_batendo = pygame.mixer.Sound("som_carro_batendo.ogg")
 theme=pygame.mixer.Sound("top_gear_music.ogg")
-#variáveis usadas para limitar a movimentação
+
+'''Variáveis usadas para limitar a movimentação'''
+
 carro_largura = 56
 obstaculo_altura=125
 
-#Cores
+'''Cores'''
+
 preto = (0,0,0)
 amarelo = (234,226,72)
 vermelho = (255,0,21)
 cinza = (118, 123, 132)
 branco = (255,255,255)
 
-#fontes
+'''fontes'''
 font = pygame.font.SysFont(None, 20)
 font_upper = pygame.font.SysFont(None, 30)
 
-#função usada para criar texto
+'''função usada para criar texto'''
+
 def texto(msg, cor, larg, alt,fonte):
     #A função render() poe o texto em uma superfície
     texto1 = fonte.render(msg, True, cor)
@@ -64,17 +74,13 @@ def texto(msg, cor, larg, alt,fonte):
     # por isso eu uso:
     tela.blit(texto1, [larg, alt])
     # A superficie onde eu irei blitar o texto é o fundo
-
-#função usada para por os objetos do fundo na tela
-def objetos_fundo_estatico():
-    tela.blit(fundo,(-50,0))
-    tela.blit(fundo, (350, 0))
     
 #variavel acrescimo de posiçao y
 _y_ = 0
 mudar = 0
 
-#objetos que vão se mover
+'''função dos objetos de fundo que vão se mover'''
+
 def objetos_fundo_cinematicos(obs_faixa_x, obs_faixa_y, velocidade_pista):
     global _y_
     global mudar
@@ -83,22 +89,28 @@ def objetos_fundo_cinematicos(obs_faixa_x, obs_faixa_y, velocidade_pista):
         mudar = obs_faixa_y+ step + _y_
         _y_ += 0.4
 
-#função que cria o carro
+'''função que cria o carro'''
+
 def ret_carro(cor, retangulo):
     pygame.draw.rect(tela, cor, retangulo , 0)
 
-#função que cria os obstaculos
+'''função que cria os obstaculos'''
+
 def ret_obstaculo(cor, retangulo):
     pygame.draw.rect(tela, cor, retangulo , 0)
 
-#função que cria o score
+'''função que cria o score'''
+
 def score(score):
     text = font_upper.render("Score = "+str(score)+ " meters", True, branco)
     tela.blit(text, [10,0])
 
-#função que roda o jogo
+'''função que roda o jogo'''
+
 def game():
     
+    '''Variaveis para movimentação'''
+
     #variáveis posição do carro
     x=(largura*0.45)
     y=(altura*0.8)
@@ -127,29 +139,37 @@ def game():
     menu = True
     bateu = False
 
-    #música de fundo
+    '''música de fundo'''
     pygame.mixer.music.play(-1)
     
     #contador para o 'velocimetro'
     contador = 0
     
+    '''Onde o jogo realmente começa a 'rodar''''
     while menu:
+        
+        #parando de tocar a musica que ira tocar quando o jogo começar
         pygame.mixer.music.stop()
+        
+        #começando a tocar a música do menu
         theme.play()
+        
+        #pondo o menu
         tela.blit(tela_inicial, (largura/200, altura/400))
-        #tela.blit(roda_menu, (largura/5, altura/5))
-
-        #texto("PRESS SPACE TO PLAY", vermelho, largura/7, altura/4,font)
-        #texto("PRESS Q TO QUIT", vermelho, largura/7, altura/3, font)
+        
+        #atualizando a tela para contar com o menu que eu pus
         pygame.display.update()
+        
+        #começando a contar com açôes do jogador, a partir de eventos
         for event in pygame.event.get():
                 
+            #sair do jogo
             if event.type ==  pygame.QUIT:
                 menu = False
                 sair = False
                 bateu = False
                         
-                
+            #comandos    
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     menu = False
@@ -161,6 +181,8 @@ def game():
     if menu == False:                    
         theme.stop()
         pygame.mixer.music.play(-1)
+        
+        #rodando a parte prática do jogo - carro e obstáculos
         while sair:
             while bateu:
                 tela.blit(tela_gameover, (largura/400, altura/400))
@@ -204,6 +226,7 @@ def game():
             obs_vel1+=0.005
             obs_vel+=0.005
             contador+=1
+            
             #gera a variaçao do movimento do carro
             x+=pos_x
             y+=pos_y
@@ -212,15 +235,18 @@ def game():
             global _y_
             _y_+=velocidade_pista
             
-            #define a cor da tela
+            #define o fundo e a posição onde ele ficará
             tela.blit(pista, (largura/200, altura/400))
             
             
             
             '''REGRAS DO JOGO'''
+            
             #se o carro bater na lateral o jogo dá gameover
             if x>250 or x<0:
                 pygame.mixer.music.stop()
+                
+                #som que toca caso o carro bate
                 carro_batendo.play()
                 bateu = True
 
@@ -235,28 +261,28 @@ def game():
                 obs_x = randint(160, 250)
 
             
-
+            '''rodando a função que faz a pista se movimentar'''
             objetos_fundo_cinematicos(obs_faixa_x, obs_faixa_y, velocidade_pista)
             global mudar
             if (mudar >= 800):
                 _y_ = 0
-            #criado o carro
+            
+            '''criado o carro'''
             retangulo1=pygame.Rect(x,y,45,79)
             ret_carro(preto,retangulo1)
             tela.blit(carro_imagem,retangulo1)
 
-            '''vermelho 1'''
+            #vermelho 1
             retangulo2=pygame.Rect(obs_x1, obs_y1, 45, 79)
             ret_obstaculo(preto,retangulo2)
             tela.blit(foto_obstaculo2, retangulo2)
-            #objetos_fundo(largura/2, 0)
             
-            '''vermelho 2'''
+            #vermelho 2
             retangulo3=pygame.Rect(obs_x, obs_y, 45, 79)
             ret_obstaculo(preto,retangulo3)
             tela.blit(foto_obstaculo1, retangulo3)
 
-            #notificar se bateu ou não no retangulo    
+            '''notificar se bateu ou não no retangulo'''
             if retangulo1.colliderect(retangulo2) == True:
                 #faz a música parar
                 pygame.mixer.music.stop()
@@ -269,13 +295,14 @@ def game():
                 #toca o som de carros batendo
                 carro_batendo.play()
                 bateu=True
-            #score
+            
+            '''Score'''
             score(contador)
             
-            #usada para atualizar a tela
+            '''usada para atualizar a tela'''
             pygame.display.update()
             
-            #definir o fps
+            '''definir o fps'''
             relogio.tick(120)
 
 game()
