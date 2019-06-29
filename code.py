@@ -132,25 +132,19 @@ def game():
     #variaveis da movimentação, dos objetos 
     obs_faixa_x = largura/2.5
     obs_faixa_y = -20
-    velocidade_pista=0.005
+    velocidade_pista=0.0005
     
     #modulos de mudanças de tela
     sair = True
     menu = True
     bateu = False
-
-    '''música de fundo'''
-    pygame.mixer.music.play(-1)
     
     #contador para o 'velocimetro'
     contador = 0
     
-    '''Onde o jogo realmente começa a 'rodar''''
+    '''Onde o jogo realmente começa a rodar'''
     while menu:
-        
-        #parando de tocar a musica que ira tocar quando o jogo começar
-        pygame.mixer.music.stop()
-        
+
         #começando a tocar a música do menu
         theme.play()
         
@@ -223,8 +217,8 @@ def game():
             #gera o movimento dos obstaculos
             obs_y+=obs_vel
             obs_y1+=obs_vel1
-            obs_vel1+=0.005
-            obs_vel+=0.005
+            obs_vel1+=0.0005
+            obs_vel+=0.0005
             contador+=1
             
             #gera a variaçao do movimento do carro
