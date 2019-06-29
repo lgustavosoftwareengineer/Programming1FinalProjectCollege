@@ -12,34 +12,34 @@ comprimentos = (300,600)
 tela = pygame.display.set_mode(comprimentos)
 
 #legenda
-pygame.display.set_caption("car game")
+pygame.display.set_caption("CarRacingGame")
 
 #fps
 relogio=pygame.time.Clock()
 
 #imagens usadas
-carro_imagem=pygame.image.load("carrinho_azul_new.png")
+carro_imagem=pygame.image.load("carro_azul.png")
 fundo = pygame.image.load("download12.jpg")
 pista=pygame.image.load("pista_preta.png")
 quadrado_pista = pygame.image.load("quadrados_pista.png")
-#faixa=pygame.image.load("strip.jpg")
+
 
 #carro inimigo vermelho 1
-foto_obstaculo1 = pygame.image.load("red_car.png")
+foto_obstaculo1 = pygame.image.load("carro_vermelho.png")
 
 #carro inimigo vermelho 2
-foto_obstaculo2 = pygame.image.load("red_car.png")
+foto_obstaculo2 = pygame.image.load("carro_vermelho.png")
 
 #foto menu/gameover
 tela_inicial = pygame.image.load("tela_inicial.png")
 tela_gameover = pygame.image.load("tela_gameover.png")
 
-'''soms/músicas'''
+'''sons/músicas'''
 #music = pygame.mixer.music.load("tokyo_bits.ogg")
-music = pygame.mixer.music.load("top_gear_music.ogg")
+music = pygame.mixer.music.load("run_song.ogg")
 #car_moving=pygame.mixer.Sound("engine_start.wav")
-#som_esquerda=pygame.mixer.Sound("som_formula1.ogg")
-
+carro_batendo = pygame.mixer.Sound("som_carro_batendo.ogg")
+theme=pygame.mixer.Sound("top_gear_music.ogg")
 #variáveis usadas para limitar a movimentação
 carro_largura = 56
 obstaculo_altura=125
@@ -120,7 +120,7 @@ def game():
     #variaveis da movimentação, dos objetos 
     obs_faixa_x = largura/2.5
     obs_faixa_y = -20
-    velocidade_pista=0.0005
+    velocidade_pista=0.005
     
     #modulos de mudanças de tela
     sair = True
@@ -134,6 +134,8 @@ def game():
     contador = 0
     
     while menu:
+        pygame.mixer.music.stop()
+        theme.play()
         tela.blit(tela_inicial, (largura/200, altura/400))
         #tela.blit(roda_menu, (largura/5, altura/5))
 
@@ -157,6 +159,8 @@ def game():
                     bateu = False
 
     if menu == False:                    
+        theme.stop()
+        pygame.mixer.music.play(-1)
         while sair:
             while bateu:
                 tela.blit(tela_gameover, (largura/400, altura/400))
@@ -183,12 +187,9 @@ def game():
                     if event.key == pygame.K_LEFT:
                         pos_x=-3
                         pos_y=0
-                        som_esquerda.play()
-                        #car_moving.play()
                     if event.key == pygame.K_RIGHT:
                         pos_x=3
                         pos_y=0
-                        #car_moving.play()
                 if event.type == pygame.KEYUP:
                     if event.key==pygame.K_LEFT:
                         pos_x=-0.3
@@ -200,8 +201,8 @@ def game():
             #gera o movimento dos obstaculos
             obs_y+=obs_vel
             obs_y1+=obs_vel1
-            obs_vel1+=0.0005
-            obs_vel+=0.0005
+            obs_vel1+=0.005
+            obs_vel+=0.005
             contador+=1
             #gera a variaçao do movimento do carro
             x+=pos_x
@@ -219,8 +220,10 @@ def game():
             '''REGRAS DO JOGO'''
             #se o carro bater na lateral o jogo dá gameover
             if x>250 or x<0:
+                pygame.mixer.music.stop()
+                carro_batendo.play()
                 bateu = True
-            
+
             #fazer o obstaculo 1 ficar em looping
             if obs_y1> altura+obstaculo_altura:
                 obs_y1=-125
@@ -255,16 +258,23 @@ def game():
 
             #notificar se bateu ou não no retangulo    
             if retangulo1.colliderect(retangulo2) == True:
+                #faz a música parar
+                pygame.mixer.music.stop()
+                #toca o som de carros batendo
+                carro_batendo.play()
                 bateu=True
             if retangulo1.colliderect(retangulo3) == True:
+                #faz a música parar.
+                pygame.mixer.music.stop()
+                #toca o som de carros batendo
+                carro_batendo.play()
                 bateu=True
             #score
             score(contador)
             
-            #objetos_fundo_cinematicos(largura/100, altura/100)
-            
             #usada para atualizar a tela
             pygame.display.update()
+            
             #definir o fps
             relogio.tick(120)
 
