@@ -23,7 +23,7 @@ relogio=pygame.time.Clock()
 
 '''imagens usadas'''
 
-carro_imagem=pygame.image.load("carro_azul.png")
+carro_imagem=pygame.image.load("carrinho_azul.png")
 pista=pygame.image.load("pista_preta.png")
 quadrado_pista = pygame.image.load("quadrados_pista.png")
 
