@@ -143,10 +143,11 @@ def game():
     contador = 0
     
     '''Onde o jogo realmente começa a rodar'''
+    
+    #começando a tocar a música do menu
+    theme.play()
+    
     while menu:
-
-        #começando a tocar a música do menu
-        theme.play()
         
         #pondo o menu
         tela.blit(tela_inicial, (largura/200, altura/400))
