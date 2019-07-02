@@ -262,28 +262,31 @@ def game():
             if (mudar >= 800):
                 _y_ = 0
             
-            '''criado o carro'''
+            '''criado o carro & obstáculos'''
+            
             retangulo1=pygame.Rect(x,y,45,79)
             ret_carro(preto,retangulo1)
             tela.blit(carro_imagem,retangulo1)
 
-            #vermelho 1
+            #obstáculo vermelho 1
             retangulo2=pygame.Rect(obs_x1, obs_y1, 45, 79)
             ret_obstaculo(preto,retangulo2)
             tela.blit(foto_obstaculo2, retangulo2)
             
-            #vermelho 2
+            #obstáculo vermelho 2
             retangulo3=pygame.Rect(obs_x, obs_y, 45, 79)
             ret_obstaculo(preto,retangulo3)
             tela.blit(foto_obstaculo1, retangulo3)
 
             '''notificar se bateu ou não no retangulo'''
+            
             if retangulo1.colliderect(retangulo2) == True:
                 #faz a música parar
                 pygame.mixer.music.stop()
                 #toca o som de carros batendo
                 carro_batendo.play()
                 bateu=True
+            
             if retangulo1.colliderect(retangulo3) == True:
                 #faz a música parar.
                 pygame.mixer.music.stop()
